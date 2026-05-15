@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SGV · Encuesta de Cierre — Estrategia en Salud</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Figtree:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #002855;
+      --teal:   #00857C;
+      --red:    #A6192E;
+      --bg:     #F7F6F3;
+      --card:   #FFFFFF;
+      --text:   #1A1A1A;
+      --muted:  #6B7280;
+      --border: #E5E2DA;
+      --r:      12px;
+    }
+
+    body {
+      font-family: 'Figtree', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      position: relative;
+      background: var(--navy);
+      color: #fff;
+      padding: 2.5rem 1.5rem 2rem;
+      text-align: center;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #A6192E 0%, #00857C 50%, #A6192E 100%);
+    }
+    .eyebrow {
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 0.6rem;
+    }
+    header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+    header h1 .teal { color: var(--teal); }
+    .subtitle {
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+      font-weight: 300;
+    }
+
+    /* CONTEXT STRIP */
+    .context-strip {
+      background: var(--teal);
+      color: #fff;
+      padding: 1rem 1.5rem;
+      font-size: 0.82rem;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* MAIN */
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 0;
+    }
+
+    /* PROGRESS DOTS */
+    #progressDots {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .progress-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: all 0.3s ease;
+    }
+    .progress-dot.active {
+      background: var(--teal);
+      transform: scale(1.4);
+    }
+    .progress-dot.done {
+      background: var(--navy);
+    }
+
+    /* CARD */
+    .card {
+      background: var(--card);
+      border-radius: var(--r);
+      border: 1px solid var(--border);
+      padding: 2rem 1.75rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    /* STEP TAG */
+    .step-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.75rem;
+    }
+    .step-tag .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+    }
+
+    /* CARD HEADINGS */
+    .card h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 0.6rem;
+    }
+
+    /* DESC */
+    .desc {
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .desc strong { color: var(--text); font-weight: 600; }
+
+    /* SCAFFOLD */
+    .scaffold {
+      background: #F0F7F6;
+      border-left: 3px solid var(--teal);
+      border-radius: 0 8px 8px 0;
+      padding: 1.1rem 1.25rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--navy);
+      font-style: italic;
+    }
+
+    /* FIELD */
+    .field { margin-bottom: 1.25rem; }
+    .field label {
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--navy);
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+    .field label .optional {
+      font-weight: 400;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    /* INPUTS & TEXTAREAS */
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      outline: none;
+      resize: vertical;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #fff;
+    }
+    input[type="text"]:focus,
+    textarea:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(0,133,124,0.12);
+    }
+    textarea { min-height: 100px; }
+    textarea.tall { min-height: 130px; }
+
+    /* CHAR HINT */
+    .char-hint {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+      text-align: right;
+    }
+
+    /* FIELD GROUP LABEL */
+    .field-group-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--red);
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      margin-top: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    /* BUTTONS */
+    .btn {
+      flex: 1;
+      min-width: 120px;
+      padding: 0.85rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--navy);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: #003875;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(0,40,85,0.25);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--navy);
+      border: 1.5px solid var(--border);
+    }
+    .btn-secondary:hover {
+      border-color: var(--navy);
+    }
+    .btn-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* SUBMIT BUTTON */
+    .btn-submit {
+      width: 100%;
+      padding: 1rem;
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Figtree', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      letter-spacing: 0.02em;
+      transition: all 0.2s;
+    }
+    .btn-submit:hover {
+      background: #006b64;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(0,133,124,0.3);
+    }
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* STEPS */
+    .step { display: none; animation: fadeUp 0.35s ease both; }
+    .step.visible { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* THANK YOU */
+    .thankyou {
+      text-align: center;
+      padding: 3rem 1.5rem;
+    }
+    .thankyou .icon { font-size: 3rem; margin-bottom: 1rem; }
+    .thankyou h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: var(--navy);
+      margin-bottom: 1rem;
+    }
+    .thankyou p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      max-width: 380px;
+      margin: 0 auto;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    footer span { color: var(--navy); font-weight: 500; }
+
+    /* RESPONSIVE */
+    @media (max-width: 480px) {
+      .card { padding: 1.5rem 1.25rem; }
+      header { padding: 2rem 1.25rem 1.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <p class="eyebrow">Universidad de los Andes · Magíster en Salud 2026</p>
+    <h1>Clínica San Gabriel <span class="teal">del Valle</span></h1>
+    <p class="subtitle">Estrategia en Salud · Encuesta de cierre grupal</p>
+  </header>
+
+  <div class="context-strip">
+    Completa esta encuesta <strong>antes del domingo 18 de mayo</strong>.
+    Tus respuestas son la base para construir juntos la hipótesis estratégica,
+    el premortem y la pregunta final en la reunión de las 20:00.
+  </div>
+
+  <main>
+    <div id="progressDots"></div>
+
+    <form id="sgvForm" action="https://formspree.io/f/xlgzqlvd" method="POST">
+
+      <!-- STEP 1 -->
+      <div id="step-1" class="step visible">
+        <div class="card">
+          <div class="step-tag"><span class="dot"></span>Paso 1 de 3</div>
+          <h2>¿Quién eres?</h2>
+          <p class="desc">Solo para identificar las respuestas al consolidar.
+            No hay respuestas correctas o incorrectas.</p>
+          <div class="field">
+            <label for="nombre">Nombre completo</label>
+            <input type="text" id="nombre" name="nombre"
+              placeholder="Ej: Valentina Espinoza" required />
+          </div>
+        </div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-primary" onclick="goTo(2)">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div id="step-2" class="step">
+        <div class="card">
+          <div class="step-tag"><span class="dot"></span>Paso 2 de 3</div>
+          <h2>Hipótesis estratégica</h2>
+          <p class="desc">La pauta exige formular: <strong>"Nuestra estrategia funcionará
+            si ________."</strong><br/>Piensa en las condiciones internas y externas.
+            No hay una respuesta correcta — lo que importa es tu argumento.</p>
+          <div class="scaffold">
+            "La estrategia de SGV funcionará si [condición del modelo
+            interno de la clínica] y si [condición del entorno o de los
+            financiadores]."
+          </div>
+          <div class="field">
+            <label for="hipotesis_interna">Condición interna crítica</label>
+            <textarea id="hipotesis_interna" name="hipotesis_interna" class="tall"
+              placeholder="Ej: SGV logra que los médicos adopten protocolos ERAS en las 3 líneas quirúrgicas y alinea sus incentivos con el modelo de caso resuelto..."
+              required></textarea>
+            <p class="char-hint">Máximo 2-3 líneas</p>
+          </div>
+          <div class="field">
+            <label for="hipotesis_entorno">Condición del entorno o financiadores</label>
+            <textarea id="hipotesis_entorno" name="hipotesis_entorno"
+              placeholder="Ej: el bono PAD se mantiene vigente y las isapres sostienen la demanda de cirugía electiva privada en la región centro-sur..."
+              required></textarea>
+            <p class="char-hint">Máximo 2-3 líneas</p>
+          </div>
+          <div class="field-group-label">Dato que mataría la hipótesis</div>
+          <div class="field">
+            <label for="dato_mata">¿Qué señal o dato te diría que la estrategia está fallando?</label>
+            <textarea id="dato_mata" name="dato_mata"
+              placeholder="Ej: si a los 6 meses la utilización de pabellones no supera el 75% o las glosas no bajan del 6%..."
+              required></textarea>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-secondary" onclick="goTo(1)">← Volver</button>
+          <button type="button" class="btn btn-primary" onclick="goTo(3)">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div id="step-3" class="step">
+        <div class="card">
+          <div class="step-tag"><span class="dot"></span>Paso 3 de 3</div>
+          <h2>Premortem</h2>
+          <p class="desc">Imagina que estamos en <strong>mayo 2028 — 24 meses
+            después</strong>. La estrategia de SGV fracasó. ¿Por qué?<br/>Identifica
+            las 2 causas que te parecen más probables.</p>
+          <div class="scaffold">
+            "Estamos en 24 meses más. La estrategia fracasó.
+            ¿Por qué?" — Piensa como crítico, no como defensor del trabajo.
+          </div>
+
+          <div class="field-group-label">Causa probable 1</div>
+          <div class="field">
+            <label for="causa1">¿Qué salió mal?</label>
+            <textarea id="causa1" name="causa1"
+              placeholder="Ej: el cuerpo médico nunca adoptó los protocolos ERAS y cada cirujano siguió operando a su manera, imposibilitando la estandarización..."
+              required></textarea>
+          </div>
+          <div class="field">
+            <label for="senal1">Señal temprana que lo habría advertido <span class="optional">(opcional)</span></label>
+            <input type="text" id="senal1" name="senal1"
+              placeholder="Ej: adherencia a protocolos < 40% al mes 3" />
+          </div>
+
+          <div class="field-group-label">Causa probable 2</div>
+          <div class="field">
+            <label for="causa2">¿Qué salió mal?</label>
+            <textarea id="causa2" name="causa2"
+              placeholder="Ej: el SAP se anuló o se redujo en la renovación 2027, eliminando el respaldo financiero de la línea de traumatología..."
+              required></textarea>
+          </div>
+          <div class="field">
+            <label for="senal2">Señal temprana <span class="optional">(opcional)</span></label>
+            <input type="text" id="senal2" name="senal2"
+              placeholder="Ej: señal de cambio en política ministerial al mes 12" />
+          </div>
+
+          <div class="field-group-label">Aporte para el domingo</div>
+          <div class="field">
+            <label for="aporte_final">¿Por qué esta propuesta es una estrategia y no un plan de mejora? — Tu idea en 2-3 líneas <span class="optional">(la redactamos juntos el domingo)</span></label>
+            <textarea id="aporte_final" name="aporte_final"
+              placeholder="Ej: porque parte de una renuncia real (dejar de ser generalista), tiene posicionamiento claro, indicadores definidos y gobernanza que ejecuta..."></textarea>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-secondary" onclick="goTo(2)">← Volver</button>
+        </div>
+        <button type="submit" class="btn-submit" id="submitBtn">Enviar mis respuestas ✓</button>
+      </div>
+
+      <!-- STEP THANKS -->
+      <div id="step-thanks" class="step">
+        <div class="card thankyou">
+          <div class="icon">🎉</div>
+          <h2>¡Listo, gracias!</h2>
+          <p>Tus respuestas quedaron registradas. Juan las consolidará antes de la
+            reunión del <strong>domingo 18 a las 20:00</strong>.<br/><br/>Recuerda
+            revisar el consolidado v5 en el Drive con los cambios de la reunión del
+            jueves.</p>
+        </div>
+      </div>
+
+    </form>
+  </main>
+
+  <footer>
+    <span>Clínica San Gabriel del Valle</span> · Estrategia en Salud · UAndes 2026 · Grupo 1
+  </footer>
+
+  <script>
+    const TOTAL = 3;
+    let current = 1;
+
+    function buildDots() {
+      const wrap = document.getElementById('progressDots');
+      for (let i = 1; i <= TOTAL; i++) {
+        const d = document.createElement('div');
+        d.className = 'progress-dot' + (i === 1 ? ' active' : '');
+        d.id = 'dot-' + i;
+        wrap.appendChild(d);
+      }
+    }
+
+    function updateDots(to) {
+      for (let i = 1; i <= TOTAL; i++) {
+        const dot = document.getElementById('dot-' + i);
+        if (i < to)       dot.className = 'progress-dot done';
+        else if (i === to) dot.className = 'progress-dot active';
+        else               dot.className = 'progress-dot';
+      }
+    }
+
+    function goTo(n) {
+      if (n > current) {
+        const currentStep = document.getElementById('step-' + current);
+        const required = currentStep.querySelectorAll('[required]');
+        let hasEmpty = false;
+        required.forEach(function(el) {
+          if (el.value.trim() === '') {
+            el.style.borderColor = 'var(--red)';
+            if (!hasEmpty) { el.focus(); }
+            hasEmpty = true;
+            el.addEventListener('input', function handler() {
+              el.style.borderColor = '';
+              el.removeEventListener('input', handler);
+            });
+          }
+        });
+        if (hasEmpty) return;
+      }
+
+      document.getElementById('step-' + current).classList.remove('visible');
+      current = n;
+      const next = document.getElementById('step-' + current);
+      if (next) next.classList.add('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      updateDots(n);
+    }
+
+    document.getElementById('sgvForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+      try {
+        const res = await fetch(this.action, {
+          method: 'POST',
+          body: new FormData(this),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          document.getElementById('step-' + current).classList.remove('visible');
+          document.getElementById('progressDots').style.display = 'none';
+          document.getElementById('step-thanks').classList.add('visible');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          btn.disabled = false;
+          btn.textContent = 'Error al enviar — intenta de nuevo';
+          btn.style.background = 'var(--red)';
+        }
+      } catch {
+        btn.disabled = false;
+        btn.textContent = 'Sin conexión — intenta de nuevo';
+        btn.style.background = 'var(--red)';
+      }
+    });
+
+    buildDots();
+  </script>
+
+</body>
+</html>
