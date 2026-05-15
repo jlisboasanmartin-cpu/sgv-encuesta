@@ -33,11 +33,26 @@
 
     /* HEADER LOGO */
     .header-logo {
-      height: 36px;
+      height: 30px;
       width: auto;
-      margin-bottom: 1.2rem;
       filter: brightness(0) invert(1);
-      opacity: 0.92;
+      opacity: 0.88;
+      flex-shrink: 0;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .header-divider {
+      width: 1px;
+      height: 2rem;
+      background: rgba(255,255,255,0.25);
+      flex-shrink: 0;
     }
 
     /* HEADER */
@@ -45,7 +60,7 @@
       position: relative;
       background: var(--navy);
       color: #fff;
-      padding: 2.5rem 1.5rem 2rem;
+      padding: 1.5rem 1.5rem 1.25rem;
       text-align: center;
     }
     header::before {
@@ -356,10 +371,13 @@
 <body>
 
   <header>
-    <img src="https://www.uandes.cl/wp-content/themes/uandes-main/img/logos/universidad_de_los_andes_hor.svg"
-         alt="Universidad de los Andes"
-         class="header-logo" />
-    <h1>Clínica San Gabriel <span class="teal">del Valle</span></h1>
+    <div class="header-top">
+      <img src="https://www.uandes.cl/wp-content/themes/uandes-main/img/logos/universidad_de_los_andes_hor.svg"
+           alt="Universidad de los Andes"
+           class="header-logo" />
+      <div class="header-divider"></div>
+      <h1>Clínica San Gabriel <span class="teal">del Valle</span></h1>
+    </div>
     <p class="subtitle">Estrategia en Salud · Encuesta de cierre grupal · Magíster en Salud 2026</p>
   </header>
 
